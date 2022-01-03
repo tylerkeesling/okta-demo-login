@@ -3,6 +3,7 @@ html
   head
     title Twizzlers Login
     link(rel='stylesheet' href='https://global.oktacdn.com/okta-signin-widget/5.14.1/css/okta-sign-in.min.css')
+    link(rel='stylesheet' href='/assets/styles/main.css')
   body
     block content
     #osw-container
@@ -10,13 +11,23 @@ html
   script(src='https://global.oktacdn.com/okta-signin-widget/5.14.1/js/okta-sign-in.min.js')
   script.
     baseUrl="#{baseUrl}"
-    var oktaSignIn = new OktaSignIn({baseUrl: "https://dev-76476905.okta.com"})
+    var oktaSignIn = new OktaSignIn({
+      baseUrl,
+      i18n: {
+        en: {
+          'primaryauth.title': 'Sign into me',
+          'primaryauth.username.placeholder': 'Username or Email',
+          'primaryauth.password.placeholder': 'Passw0rd',
+        }
+      },
+      logo: `${window.location.origin}/assets/twizzlers-logo.png`
+    })
 
     oktaSignIn.renderEl({
       el: "#osw-container"
     }, function success(res) {
       if (res.status === "SUCCESS") {
-        res.session.setCookieAndRedirect('https://dev-76476905.okta.com/app/UserHome');
+        res.session.setCookieAndRedirect(`${baseUrl}/app/UserHome`);
       }
     })
 
